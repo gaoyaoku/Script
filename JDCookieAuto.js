@@ -1,6 +1,6 @@
 /*
 [rewrite_local]
-^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=GetJDUserInfoUnion url script-request-header https://raw.githubusercontent.com/gaoyaoku/Q/main/Script/JDCookieAuto.js
+^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=GetJDUserInfoUnion url script-request-header https://raw.githubusercontent.com/gaoyaoku/Script/main/JDCookieAuto.js
 
 [mitm]
 hostname = api.m.jd.com
