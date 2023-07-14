@@ -49,7 +49,7 @@ hostname = api.m.jd.com
         $done()
     }
 })()
-
+// Quantumult X doesn't support async/await very well.
 // Get token from server.
 function getToken(server_url, client_id, client_secret) {
     return new Promise((resolve, reject) => {
@@ -112,7 +112,10 @@ function addEnv(server_url, token, cookie) {
             }])
         }).then(response => {
             response = JSON.parse(response.body)
-            if (response.code !== 200) {
+            if (response.code === 200) {
+                // This is necessary.
+                resolve()
+            } else {
                 reject(new Error(response.message))
             }
         }, reason => {
@@ -138,7 +141,9 @@ function updateEnv(server_url, token, cookie, id) {
             })
         }).then(response => {
             response = JSON.parse(response.body)
-            if (response.code !== 200) {
+            if (response.code === 200) {
+                resolve()
+            } else {
                 reject(new Error(response.message))
             }
         }, reason => {
