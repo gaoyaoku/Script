@@ -51,89 +51,98 @@ hostname = api.m.jd.com
 })()
 
 // Get token from server.
-async function getToken(server_url, client_id, client_secret) {
-    $task.fetch({
-        url: `${server_url}/open/auth/token?client_id=${client_id}&client_secret=${client_secret}`,
-        method: 'GET'
-    }).then(response => {
-        response = JSON.parse(response.body)
-        if (response.code === 200) {
-            return response.data.token
-        } else {
-            throw new Error(response.message)
-        }
-    }, reason => {
-        return reason.error
-    });
+function getToken(server_url, client_id, client_secret) {
+    return new Promise((resolve, reject) => {
+        $task.fetch({
+            url: `${server_url}/open/auth/token?client_id=${client_id}&client_secret=${client_secret}`,
+            method: 'GET'
+        }).then(response => {
+            response = JSON.parse(response.body)
+            if (response.code === 200) {
+                resolve(response.data.token)
+            } else {
+                reject(new Error(response.message))
+            }
+        }, reason => {
+            reject(reason.error)
+        });
+    })
+
 }
 
 // Get all envs and get proper id form it.
-async function getID(server_url, token, username) {
-    $task.fetch({
-        url: `${server_url}/open/envs`,
-        method: 'GET',
-        headers: {Authorization: `Bearer ${token}`}
-    }).then(response => {
-        response = JSON.parse(response.body)
-        if (response.code === 200) {
-            response.data.forEach(item => {
-                if (item.value.indexOf(username) > -1) {
-                    return item.id
-                }
-            })
-            // Cookie doesn't exist
-            return null
-        } else {
-            throw new Error(response.message)
-        }
-    }, reason => {
-        return reason.error
-    });
+function getID(server_url, token, username) {
+    return new Promise((resolve, reject) => {
+        $task.fetch({
+            url: `${server_url}/open/envs`,
+            method: 'GET',
+            headers: {Authorization: `Bearer ${token}`}
+        }).then(response => {
+            response = JSON.parse(response.body)
+            if (response.code === 200) {
+                response.data.forEach(item => {
+                    if (item.value.indexOf(username) > -1) {
+                        resolve(item.id)
+                    }
+                })
+                // Cookie doesn't exist
+                resolve(null)
+            } else {
+                reject(new Error(response.message))
+            }
+        }, reason => {
+            reject(reason.error)
+        });
+    })
 }
 
 // If env doesn't exist this cookie, add a new one.
-async function addEnv(server_url, token, cookie) {
-    $task.fetch({
-        url: `${server_url}/open/envs`,
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify([{
-            name: 'JD_COOKIE',
-            value: cookie
-        }])
-    }).then(response => {
-        response = JSON.parse(response.body)
-        if (response.code !== 200) {
-            throw new Error(response.message)
-        }
-    }, reason => {
-        return reason.error
-    });
+function addEnv(server_url, token, cookie) {
+    return new Promise((resolve, reject) => {
+        $task.fetch({
+            url: `${server_url}/open/envs`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify([{
+                name: 'JD_COOKIE',
+                value: cookie
+            }])
+        }).then(response => {
+            response = JSON.parse(response.body)
+            if (response.code !== 200) {
+                reject(new Error(response.message))
+            }
+        }, reason => {
+            reject(reason.error)
+        });
+    })
 }
 
 // Update cookie depends on id and name.
-async function updateEnv(server_url, token, cookie, id) {
-    $task.fetch({
-        url: `${server_url}/open/envs`,
-        method: 'PUT',
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            id: id,
-            name: 'JD_COOKIE',
-            value: cookie
-        })
-    }).then(response => {
-        response = JSON.parse(response.body)
-        if (response.code !== 200) {
-            throw new Error(response.message)
-        }
-    }, reason => {
-        return reason.error
-    });
+function updateEnv(server_url, token, cookie, id) {
+    return new Promise((resolve, reject) => {
+        $task.fetch({
+            url: `${server_url}/open/envs`,
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: id,
+                name: 'JD_COOKIE',
+                value: cookie
+            })
+        }).then(response => {
+            response = JSON.parse(response.body)
+            if (response.code !== 200) {
+                reject(new Error(response.message))
+            }
+        }, reason => {
+            reject(reason.error)
+        });
+    })
 }
