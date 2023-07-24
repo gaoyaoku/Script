@@ -18,7 +18,8 @@ if (!cookie2 || !SID) {
     $notify('Cannot find cookie2 or SID in cookie!')
     $done()
 }
-const cookie = cookie2 + SID
-console.log(`Successfully get Eleme cookie!` + '\n' + cookie)
-$notify(`Successfully get Eleme cookie!`, cookie)
+const cookie = SID + cookie2
+const username = SID.match(/SID=(.+?);/)[1]
+console.log(`Successfully get ${username}'s cookie!` + '\n' + cookie)
+$notify(`Successfully get ${username}'s cookie!`, cookie)
 $done()
