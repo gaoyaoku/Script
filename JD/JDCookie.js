@@ -21,5 +21,5 @@ if (!pt_key || !pt_pin) {
 const cookie = pt_key + pt_pin
 const username = pt_pin.match(/pt_pin=(.+?);/)[1]
 console.log(`Successfully get ${username}'s cookie!` + '\n' + cookie)
-$notify(`Successfully get ${username}'s cookie!`, `${cookie}`)
+$notify(`Successfully get ${username}'s cookie!`, cookie)
 $done()
