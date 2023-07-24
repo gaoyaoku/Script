@@ -1,6 +1,6 @@
 /*
 [rewrite_local]
-^https:\/\/nt2\.ele\.me url script-request-header https://raw.githubusercontent.com/gaoyaoku/Script/main/ElemeCookie.js
+^https:\/\/nt2\.ele\.me url script-request-header https://raw.githubusercontent.com/gaoyaoku/Script/main/Eleme/ElemeCookie.js
 
 [mitm]
 hostname = nt2.ele.me
